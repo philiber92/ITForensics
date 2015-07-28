@@ -1,6 +1,6 @@
 package de.itfor.hsqldb;
 
-import de.itfor.hsqldb.forms.ImportForm;
+import de.itfor.hsqldb.forms.ConnectionForm;
 
 /**
  * Created by Philipp Bergt and Jan Schneck on 02.07.15.
@@ -8,7 +8,7 @@ import de.itfor.hsqldb.forms.ImportForm;
 public class HSQLDB {
 
     public static void main(String[] args) {
-        ImportForm dialog = new ImportForm();
+        ConnectionForm dialog = new ConnectionForm();
         dialog.pack();
         dialog.setVisible(true);
     }

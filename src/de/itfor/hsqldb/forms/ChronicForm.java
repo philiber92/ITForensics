@@ -1,6 +1,8 @@
 package de.itfor.hsqldb.forms;
 
 import javax.swing.*;
+import javax.swing.text.*;
+import java.awt.*;
 import java.awt.event.*;
 
 public class ChronicForm extends JDialog {
@@ -8,11 +10,26 @@ public class ChronicForm extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JProgressBar progressBar1;
+    private JTextPane c;
+
+    private SimpleAttributeSet infoAttr = new SimpleAttributeSet();
+    private SimpleAttributeSet errorAttr = new SimpleAttributeSet();
 
     public ChronicForm() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+
+        this.c.setText("Execution ...");
+
+        StyleConstants.setFontFamily(infoAttr, "Gulim");
+        StyleConstants.setFontSize(infoAttr, 12);
+        StyleConstants.setForeground(infoAttr, Color.black);
+
+        StyleConstants.setFontFamily(errorAttr, "Gulim");
+        StyleConstants.setFontSize(errorAttr, 12);
+        StyleConstants.setForeground(errorAttr, Color.red);
+        StyleConstants.setBold(errorAttr, true);
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -50,5 +67,22 @@ public class ChronicForm extends JDialog {
     private void onCancel() {
 // add your code here if necessary
         dispose();
+    }
+
+    public void WriteLine(String text, AttributeSet attr) {
+        StyledDocument doc = this.c.getStyledDocument();
+        try {
+            doc.insertString(doc.getLength(), "\n" + text, null);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void WriteInfo(String text) {
+        WriteLine(text, infoAttr);
+    }
+
+    public void WriteError(String text) {
+        WriteLine(text, errorAttr);
     }
 }

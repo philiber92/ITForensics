@@ -1,45 +1,30 @@
 package de.itfor.hsqldb.forms;
 
-import de.itfor.hsqldb.listeners.DBFileMouseListener;
+import de.itfor.hsqldb.Database;
 import de.itfor.hsqldb.listeners.SQLFilesMouseListener;
+import de.itfor.hsqldb.listeners.SQLImportActionListener;
 
 import javax.swing.*;
 import java.awt.event.*;
-import java.io.File;
 
-public class ImportForm extends JDialog {
+public class ImportForm extends DBDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextField userField;
-    private JPasswordField pwdField;
-    private JTextField dbField;
-    private JTextField filesField;
+    private JTextField textField1;
+    private JTextField selectErrorFileTextField;
+    private SQLFilesMouseListener filesListener;
 
-    private File dbFile;
-    private File[] sqlFiles;
-
-    public ImportForm() {
+    public ImportForm(Database database) {
+        super(database);
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+        filesListener = new SQLFilesMouseListener(getParent());
 
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-                int result = fileChooser.showOpenDialog(getParent());
-            }
-        });
-
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
-
-        dbField.addMouseListener(new DBFileMouseListener(getParent()));
-        filesField.addMouseListener(new SQLFilesMouseListener(getParent()));
+        buttonCancel.addActionListener(e -> onCancel());
+        textField1.addMouseListener(filesListener);
+        buttonOK.addActionListener(new SQLImportActionListener(db));
 
 // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -50,21 +35,13 @@ public class ImportForm extends JDialog {
         });
 
 // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    private void onOK() {
-// add your code here
-        dispose();
-    }
 
     private void onCancel() {
 // add your code here if necessary
         dispose();
     }
-
 }

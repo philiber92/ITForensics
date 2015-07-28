@@ -1,3 +1,5 @@
+package de.itfor.hsqldb;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -12,7 +14,7 @@ public class Database {
 
     public Database(String host, String username, String password) throws Exception {
         Class.forName("org.hsqldb.jdbc.JDBCDriver");
-        _c = DriverManager.getConnection("jdbc:hsqldb" + host, usernamem, password);
+        _c = DriverManager.getConnection("jdbc:hsqldb" + host, username, password);
     }
 
 
